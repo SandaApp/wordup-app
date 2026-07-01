@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "WORDUP",
+    "slug": "wordup",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#FFF7E6",
+      "resizeMode": "contain",
+      "image": "./assets/splash.png"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.wordup.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFF7E6",
+        "foregroundImage": "./assets/adaptive-icon.png"
+      },
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "SCHEDULE_EXACT_ALARM"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#6D3FD1"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "235265aa-b96a-445f-8ecf-e21e57638ba7"
+      }
+    }
+  }
+}
