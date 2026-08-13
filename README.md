@@ -1,39 +1,81 @@
-# WORDUP
+# Sanda's WordUp
 
-**Daily Scripture. Prayer & Growth.**
+**Daily Scripture. Prayer & Growth.**  
+**Turning screen time into Scripture time.**
 
-WORDUP is an Expo React Native mobile app designed for families, teens, young adults, and individuals who want to grow closer to God through daily Scripture, prayer, memory verses, and spiritual habit-building.
+Sanda's WordUp is an Expo React Native (TypeScript) Android app for families, teens, young adults, and individuals — offline KJV Bible, daily devotion, prayer, memory verses, and spiritual habit-building.
 
-## MVP Features Included in This Scaffold
+Developed by **Bishop Dr. David Sanda** for the glory of Jesus.
 
-- Today screen with verse, devotion, reflection, prayer, and challenge
-- Read-aloud support using `expo-speech`
-- Prayer screen with guided prayers and private prayer requests
-- Memory verse practice
-- Progress tracking with local device storage
-- Settings screen for reminder time and spoken greeting toggle
-- Notification service starter for daily verse reminders
+Inspired by **Psalm 119:11** — *Thy word have I hid in mine heart, that I might not sin against thee.*
 
-## Setup
+Logo: vertical golden sword in a blue heart (do not redesign or slant).
 
-Install Node.js LTS first. Then open this folder in your terminal:
+- **Website:** https://davidsanda.com/wordup/  
+- **Privacy:** https://davidsanda.com/wordup/privacy.html  
+- **Repo:** https://github.com/SandaApp/wordup-app  
+
+## Identity
+
+| Field | Value |
+|-------|--------|
+| Display name | Sanda's WordUp |
+| version | 1.0.0 |
+| Android applicationId | `com.davidsanda.wordup` |
+
+## Features (v1.0.0)
+
+- Animated intro & onboarding  
+- Daily devotion, verse of the day, spoken greeting  
+- Offline KJV Bible reader + search (full text)  
+- Words of Christ in red  
+- Save, highlight, speak, and share verses  
+- Guided prayers & private prayer requests  
+- Memory practice, quizzes, streaks, badges  
+- Reminder scheduling · Individual/Family mode  
+
+## Size notes
+
+Release builds exclude concept art and emulator ABIs, use a compact KJV JSON shape, minify with R8, and ship a smaller in-app logo asset. Full Scripture and features are retained. See `WORDUP_HANDOVER.md`.
+
+## Quick start
 
 ```bash
-cd WORDUP
 npm install
 npm start
 ```
 
-To run on Android:
-
 ```bash
 npm run android
+npm run typecheck
 ```
 
-You can also install the Expo Go app on your Android phone and scan the QR code shown by Expo.
+## EAS Build
 
-## Important Note About Automatic Voice Reminders
+```bash
+npm install -g eas-cli
+eas login
+eas build -p android --profile preview
+eas build -p android --profile production
+```
 
-Expo can speak automatically when the app is open. If the app is fully closed, Android normally requires a notification first. In the MVP, the notification appears at the selected time. When the user opens it, WORDUP speaks the greeting and verse.
+## Google Play
 
-True background voice playback while the app is closed can be added later with native Android code.
+See:
+
+- [`WORDUP_HANDOVER.md`](./WORDUP_HANDOVER.md)  
+- [`release/play-store/STORE_LISTING_CHECKLIST.md`](./release/play-store/STORE_LISTING_CHECKLIST.md)  
+- [`release/play-store/BUILD_AND_SUBMIT.md`](./release/play-store/BUILD_AND_SUBMIT.md)  
+- [`WORDUP_VISION.md`](./WORDUP_VISION.md)  
+
+## Principles
+
+1. Scripture stays central.  
+2. Words of Christ in red are core.  
+3. Prayer requests are private by default (on-device).  
+4. Family- and youth-friendly.  
+5. Redirect screen time toward spiritual value.
+
+## License
+
+See `LICENSE.txt`.
