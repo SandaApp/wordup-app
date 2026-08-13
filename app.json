@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Sanda's WordUp",
-    "slug": "sandas-wordup",
+    "slug": "wordup",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
