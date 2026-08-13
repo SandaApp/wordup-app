@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { Alert, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import Card from '../components/Card';
@@ -11,6 +11,28 @@ import { colors } from '../theme/colors';
 import { scheduleDailyWordReminder } from '../services/notificationService';
 import { getTodayDevotion, buildSpokenGreeting } from '../services/devotionService';
 import { speak } from '../services/speechService';
+import {
+  APP_DISPLAY_NAME,
+  APP_VERSION,
+  DEVELOPER_CREDIT,
+  PRIVACY_URL,
+  SUPPORT_PHONE,
+  SUPPORT_WHATSAPP,
+  WEBSITE_URL
+} from '../constants/brand';
+
+async function openExternalUrl(url: string) {
+  try {
+    const supported = await Linking.canOpenURL(url);
+    if (!supported) {
+      Alert.alert('Unable to open link', 'Please visit davidsanda.com/wordup in your browser.');
+      return;
+    }
+    await Linking.openURL(url);
+  } catch {
+    Alert.alert('Unable to open link', 'Please visit davidsanda.com/wordup in your browser.');
+  }
+}
 
 type TimeOption = {
   label: string;
@@ -89,7 +111,7 @@ export default function SettingsScreen() {
     const scheduled = await scheduleDailyWordReminder(hour, minute);
     Alert.alert(
       scheduled ? 'Reminder Set' : 'Permission Needed',
-      scheduled ? `WORDUP reminder set for ${formatDisplayTime(hour, minute)}.` : 'Please allow notifications to set reminders.'
+      scheduled ? `Sanda's WordUp reminder set for ${formatDisplayTime(hour, minute)}.` : 'Please allow notifications to set reminders.'
     );
   };
 
@@ -107,11 +129,11 @@ export default function SettingsScreen() {
 
   return (
     <Screen>
-      <SectionTitle title="Settings" subtitle="Choose how WORDUP reminds and encourages you." />
+      <SectionTitle title="Settings" subtitle="Choose how Sanda's WordUp reminds and encourages you." />
 
       <Card>
         <Text style={styles.cardTitle}>Daily Reminder</Text>
-        <Text style={styles.body}>Choose when you want WORDUP to remind you with Scripture, prayer, and growth.</Text>
+        <Text style={styles.body}>Choose when you want Sanda's WordUp to remind you with Scripture, prayer, and growth.</Text>
 
         <Pressable onPress={() => setTimeMenuOpen(true)} style={styles.dropdownButton}>
           <View>
@@ -148,7 +170,7 @@ export default function SettingsScreen() {
 
       <Card>
         <Text style={styles.cardTitle}>Mode</Text>
-        <Text style={styles.body}>WORDUP can be used personally or as a family devotional guide.</Text>
+        <Text style={styles.body}>Sanda's WordUp can be used personally or as a family devotional guide.</Text>
         <View style={styles.modeRow}>
           <PrimaryButton title="Individual" variant={settings.appMode === 'individual' ? 'primary' : 'outline'} onPress={() => updateSetting({ appMode: 'individual' })} style={styles.modeButton} />
           <PrimaryButton title="Family" variant={settings.appMode === 'family' ? 'primary' : 'outline'} onPress={() => updateSetting({ appMode: 'family' })} style={styles.modeButton} />
@@ -157,20 +179,36 @@ export default function SettingsScreen() {
 
       <Card style={styles.aboutCard}>
         <View style={styles.aboutHeader}>
-          <Image source={require('../../assets/icon_sword_heart_transparent.png')} style={styles.aboutLogo} resizeMode="contain" />
-          <Text style={styles.aboutTitle}>WORDUP</Text>
+          <Image source={require('../../assets/logo-ui.png')} style={styles.aboutLogo} resizeMode="contain" />
+          <Text style={styles.aboutTitle}>{APP_DISPLAY_NAME}</Text>
           <Text style={styles.aboutTagline}>Daily Scripture. Prayer and Growth.</Text>
         </View>
 
-        <Text style={styles.body}>WORDUP helps families, teens, young adults and individuals discover, develop and deploy their faith through Daily Scripture, Prayer and Growth.</Text>
+        <Text style={styles.body}>Sanda's WordUp helps families, teens, young adults and individuals discover, develop and deploy their faith through Daily Scripture, Prayer and Growth.</Text>
 
         <View style={styles.logoMeaningBox}>
           <Text style={styles.logoMeaningTitle}>Inspired by Psalm 119:11</Text>
           <Text style={styles.logoMeaningVerse}>“Thy word have I hid in mine heart, that I might not sin against thee.”</Text>
-          <Text style={styles.logoMeaningText}>The golden sword represents God’s Word, the sword of the Spirit. The blue heart represents a life growing in love with Jesus. Together, they remind us to hide God’s Word in our hearts.</Text>
+          <Text style={styles.logoMeaningText}>The vertical golden sword represents God’s Word, the sword of the Spirit. The blue heart represents a life growing in love with Jesus. Together, they remind us to hide God’s Word in our hearts.</Text>
         </View>
 
-        <Text style={styles.developerCredit}>Developed by Bishop Dr. David Sanda for the glory of Jesus.</Text>
+        <Text style={styles.body}>
+          Words of Christ appear in red throughout the KJV Bible reader — a core feature of Sanda's WordUp, carefully mapped across the Gospels, Acts, the Epistles, and Revelation.
+        </Text>
+
+        <Text style={styles.developerCredit}>{DEVELOPER_CREDIT}</Text>
+        <Text style={styles.versionText}>Version {APP_VERSION}</Text>
+      </Card>
+
+      <Card>
+        <Text style={styles.cardTitle}>Privacy & Support</Text>
+        <Text style={styles.body}>
+          Prayer requests and personal progress stay on your device. Sanda's WordUp does not sell data and does not use ads or trackers.
+        </Text>
+        <PrimaryButton title="Privacy Policy" variant="outline" onPress={() => openExternalUrl(PRIVACY_URL)} />
+        <PrimaryButton title="Sanda's WordUp Website" variant="outline" onPress={() => openExternalUrl(WEBSITE_URL)} />
+        <PrimaryButton title="WhatsApp Support" variant="outline" onPress={() => openExternalUrl(SUPPORT_WHATSAPP)} />
+        <PrimaryButton title="Call Support" variant="outline" onPress={() => openExternalUrl(SUPPORT_PHONE)} />
       </Card>
 
       <Modal visible={timeMenuOpen} transparent animationType="fade" onRequestClose={() => setTimeMenuOpen(false)}>
@@ -301,7 +339,7 @@ const styles = StyleSheet.create({
   },
   aboutTitle: {
     color: colors.primary,
-    fontSize: 34,
+    fontSize: 26,
     fontWeight: '900',
     letterSpacing: 1
   },
@@ -348,6 +386,13 @@ const styles = StyleSheet.create({
     marginTop: 14,
     textAlign: 'center'
   },
+  versionText: {
+    color: colors.mutedText,
+    fontSize: 13,
+    fontWeight: '800',
+    marginTop: 8,
+    textAlign: 'center'
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(33, 26, 50, 0.45)',
@@ -358,6 +403,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     padding: 20,
+    paddingBottom: 36,
     maxHeight: '78%'
   },
   modalHeader: {

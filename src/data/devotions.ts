@@ -524,7 +524,7 @@ export const devotions: Devotion[] = devotionSeeds.map((seed) => ({
   quiz: [
     {
       id: `${seed.id}-q1`,
-      question: `What is the main theme of today’s WORDUP?`,
+      question: `What is the main theme of today’s WordUp?`,
       options: [seed.theme, 'Popularity', 'Entertainment', 'Competition'],
       answerIndex: 0,
       explanation: `Today’s theme is ${seed.theme}. ${seed.keyTruth}`

@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
-import { Image, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Card from '../components/Card';
 import PrimaryButton from '../components/PrimaryButton';
 import { colors } from '../theme/colors';
 import AnimatedEntrance from '../components/AnimatedEntrance';
 import PulseView from '../components/PulseView';
+import { APP_DISPLAY_NAME, APP_TAGLINE } from '../constants/brand';
 
 const slides = [
   {
-    title: 'Welcome to WORDUP',
-    subtitle: 'Daily Scripture. Prayer & Growth.',
+    title: `Welcome to ${APP_DISPLAY_NAME}`,
+    subtitle: APP_TAGLINE,
     body: 'Build a simple habit of hearing God’s Word, reflecting, praying, and growing one day at a time.'
   },
   {
     title: 'For You and Your Family',
     subtitle: 'Personal or family mode',
-    body: 'Use WORDUP alone, with friends, or as a family devotional guide with discussion questions and daily challenges.'
+    body: `Use ${APP_DISPLAY_NAME} alone, with friends, or as a family devotional guide with discussion questions and daily challenges.`
   },
   {
     title: 'Prayer That Stays With You',
@@ -25,12 +27,13 @@ const slides = [
   {
     title: 'A Timely Word',
     subtitle: 'Verse reminders with voice',
-    body: 'Choose your reminder time. WORDUP will remind you, and when opened, speak today’s greeting and Scripture aloud.'
+    body: `Choose your reminder time. ${APP_DISPLAY_NAME} will remind you, and when opened, speak today’s greeting and Scripture aloud.`
   }
 ];
 
 export default function OnboardingScreen({ onComplete }: { onComplete: () => void }) {
   const [index, setIndex] = useState(0);
+  const insets = useSafeAreaInsets();
   const slide = slides[index];
   const isLast = index === slides.length - 1;
 
@@ -43,19 +46,21 @@ export default function OnboardingScreen({ onComplete }: { onComplete: () => voi
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.safe, { paddingTop: Math.max(insets.top, 8) }]}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.brandArea}>
           <PulseView>
-            <Image source={require('../../assets/icon_sword_heart_transparent.png')} style={styles.icon} resizeMode="contain" />
+            <Image source={require('../../assets/logo-ui.png')} style={styles.icon} resizeMode="contain" />
           </PulseView>
-          <Text style={styles.logo}>WORDUP</Text>
-          <Text style={styles.tagline}>Daily Scripture. Prayer & Growth.</Text>
+          <Text style={styles.logo}>{APP_DISPLAY_NAME}</Text>
+          <Text style={styles.tagline}>{APP_TAGLINE}</Text>
         </View>
 
         <AnimatedEntrance fromY={20} scaleFrom={0.95}>
           <Card style={styles.card}>
-            <Text style={styles.step}>STEP {index + 1} OF {slides.length}</Text>
+            <Text style={styles.step}>
+              STEP {index + 1} OF {slides.length}
+            </Text>
             <Text style={styles.title}>{slide.title}</Text>
             <Text style={styles.subtitle}>{slide.subtitle}</Text>
             <Text style={styles.body}>{slide.body}</Text>
@@ -69,21 +74,18 @@ export default function OnboardingScreen({ onComplete }: { onComplete: () => voi
         </AnimatedEntrance>
       </ScrollView>
 
-      <View style={styles.footer}>
-        <PrimaryButton title={isLast ? 'Start WORDUP' : 'Next'} onPress={goNext} />
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 12) + 10 }]}>
+        <PrimaryButton title={isLast ? `Start ${APP_DISPLAY_NAME}` : 'Next'} onPress={goNext} />
         {!isLast ? <PrimaryButton title="Skip" variant="outline" onPress={onComplete} /> : null}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
-
-const androidTopPadding = Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) + 6 : 8;
 
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.background,
-    paddingTop: androidTopPadding
+    backgroundColor: colors.background
   },
   scrollContent: {
     paddingHorizontal: 20,
@@ -101,9 +103,11 @@ const styles = StyleSheet.create({
   },
   logo: {
     color: colors.primary,
-    fontSize: 36,
+    fontSize: 26,
     fontWeight: '900',
-    letterSpacing: 1
+    letterSpacing: 0.5,
+    textAlign: 'center',
+    paddingHorizontal: 8
   },
   tagline: {
     color: colors.text,
@@ -159,7 +163,6 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 20,
     paddingTop: 10,
-    paddingBottom: Platform.OS === 'android' ? 18 : 24,
     backgroundColor: colors.background,
     borderTopWidth: 1,
     borderTopColor: colors.border

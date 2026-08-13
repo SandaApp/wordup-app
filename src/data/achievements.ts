@@ -3,7 +3,7 @@ import { Achievement } from '../types/achievement';
 export const achievements: Achievement[] = [
   {
     id: 'first-wordup',
-    title: 'First WORDUP',
+    title: "First WordUp",
     description: 'Complete your first daily devotion.',
     emoji: '📖',
     color: '#6D3FD1',
@@ -13,7 +13,7 @@ export const achievements: Achievement[] = [
   {
     id: 'three-day-streak',
     title: '3-Day Flame',
-    description: 'Keep a 3-day WORDUP streak.',
+    description: 'Keep a 3-day WordUp streak.',
     emoji: '🔥',
     color: '#F97316',
     accent: '#FFD166',
@@ -22,7 +22,7 @@ export const achievements: Achievement[] = [
   {
     id: 'seven-day-streak',
     title: 'Weekly Warrior',
-    description: 'Complete WORDUP for 7 days.',
+    description: 'Complete WordUp for 7 days.',
     emoji: '🏅',
     color: '#2563EB',
     accent: '#FACC15',
@@ -40,7 +40,7 @@ export const achievements: Achievement[] = [
   {
     id: 'thirty-day-streak',
     title: '30-Day Champion',
-    description: 'Complete the full first WORDUP journey.',
+    description: 'Complete the full first WordUp journey.',
     emoji: '👑',
     color: '#7C3AED',
     accent: '#FDE68A',

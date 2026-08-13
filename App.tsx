@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
 import { colors } from './src/theme/colors';
 import { configureNotificationHandlers, listenForOpenedVerseReminder } from './src/services/notificationService';
@@ -34,24 +35,36 @@ export default function App() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background }}>
-        <ActivityIndicator color={colors.primary} size="large" />
-      </View>
+      <SafeAreaProvider>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background }}>
+          <ActivityIndicator color={colors.primary} size="large" />
+        </View>
+      </SafeAreaProvider>
     );
   }
 
   if (!introDone) {
-    return <SplashIntroScreen onFinish={() => setIntroDone(true)} />;
+    return (
+      <SafeAreaProvider>
+        <SplashIntroScreen onFinish={() => setIntroDone(true)} />
+      </SafeAreaProvider>
+    );
   }
 
   if (!onboardingDone) {
-    return <OnboardingScreen onComplete={finishOnboarding} />;
+    return (
+      <SafeAreaProvider>
+        <OnboardingScreen onComplete={finishOnboarding} />
+      </SafeAreaProvider>
+    );
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="dark" backgroundColor={colors.background} />
-      <AppNavigator />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <StatusBar style="dark" backgroundColor={colors.background} />
+        <AppNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }

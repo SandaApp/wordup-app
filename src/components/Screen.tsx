@@ -1,26 +1,40 @@
 import React from 'react';
-import { Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, View, ViewStyle } from 'react-native';
+import { Platform, ScrollView, StatusBar, StyleSheet, View, ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../theme/colors';
 
-export default function Screen({ children, scroll = true, style }: { children: React.ReactNode; scroll?: boolean; style?: ViewStyle }) {
+type Props = {
+  children: React.ReactNode;
+  scroll?: boolean;
+  style?: ViewStyle;
+};
+
+export default function Screen({ children, scroll = true, style }: Props) {
+  const insets = useSafeAreaInsets();
+  const topPad = Math.max(insets.top, Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) : 0) + 12;
+  // Extra room above Android nav buttons + app tab bar so last buttons stay tappable
+  const bottomPad = Math.max(insets.bottom, 12) + 88;
+
   if (!scroll) {
     return (
-      <SafeAreaView style={[styles.safe, style]}>
+      <View style={[styles.safe, style, { paddingTop: topPad, paddingBottom: Math.max(insets.bottom, 8) }]}>
         <View style={styles.nonScrollContent}>{children}</View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={[styles.safe, style]}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+    <View style={[styles.safe, style]}>
+      <ScrollView
+        contentContainerStyle={[styles.content, { paddingTop: topPad + 8, paddingBottom: bottomPad }]}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
         {children}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
-
-const androidTopPadding = Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) + 26 : 14;
 
 const styles = StyleSheet.create({
   safe: {
@@ -28,12 +42,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background
   },
   content: {
-    padding: 20,
-    paddingTop: 20 + androidTopPadding,
-    paddingBottom: 40
+    paddingHorizontal: 20
   },
   nonScrollContent: {
-    flex: 1,
-    paddingTop: androidTopPadding
+    flex: 1
   }
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomeScreen from '../screens/HomeScreen';
 import TodayScreen from '../screens/TodayScreen';
 import PrayerScreen from '../screens/PrayerScreen';
@@ -56,6 +57,10 @@ function SettingsHeaderButton({ onPress }: { onPress: () => void }) {
 }
 
 export default function AppNavigator() {
+  const insets = useSafeAreaInsets();
+  const tabPadBottom = Math.max(insets.bottom, 8);
+  const tabHeight = 56 + tabPadBottom;
+
   return (
     <Tab.Navigator
       screenOptions={({ navigation }) => ({
@@ -69,9 +74,9 @@ export default function AppNavigator() {
         tabBarStyle: {
           backgroundColor: '#FFFFFF',
           borderTopColor: colors.border,
-          height: 66,
-          paddingBottom: 8,
-          paddingTop: 7
+          height: tabHeight,
+          paddingBottom: tabPadBottom,
+          paddingTop: 6
         },
         tabBarLabelStyle: {
           fontWeight: '700',

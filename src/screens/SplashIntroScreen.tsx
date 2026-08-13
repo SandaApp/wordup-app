@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, Image, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../theme/colors';
+import { APP_DISPLAY_NAME, APP_TAGLINE } from '../constants/brand';
 
 export default function SplashIntroScreen({ onFinish }: { onFinish: () => void }) {
   const heartScale = useRef(new Animated.Value(0.72)).current;
@@ -69,8 +70,8 @@ export default function SplashIntroScreen({ onFinish }: { onFinish: () => void }
         <Animated.Image source={require('../../assets/intro-sword.png')} style={[styles.sword, { opacity: swordOpacity, transform: [{ translateY: swordY }] }]} resizeMode="contain" />
       </View>
 
-      <Animated.Text style={[styles.logo, { opacity: textOpacity }]}>WORDUP</Animated.Text>
-      <Animated.Text style={[styles.tagline, { opacity: textOpacity }]}>Daily Scripture. Prayer & Growth.</Animated.Text>
+      <Animated.Text style={[styles.logo, { opacity: textOpacity }]}>{APP_DISPLAY_NAME}</Animated.Text>
+      <Animated.Text style={[styles.tagline, { opacity: textOpacity }]}>{APP_TAGLINE}</Animated.Text>
       <Animated.Text style={[styles.verse, { opacity: verseOpacity }]}>“Thy word have I hid in mine heart...”</Animated.Text>
       <Animated.Text style={[styles.reference, { opacity: verseOpacity }]}>Psalm 119:11</Animated.Text>
     </View>
@@ -113,9 +114,11 @@ const styles = StyleSheet.create({
   },
   logo: {
     color: colors.primary,
-    fontSize: 46,
+    fontSize: 34,
     fontWeight: '900',
-    letterSpacing: 1
+    letterSpacing: 0.5,
+    textAlign: 'center',
+    paddingHorizontal: 12
   },
   tagline: {
     color: colors.text,
